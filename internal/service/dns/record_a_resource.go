@@ -125,6 +125,11 @@ func (r *RecordAResource) Create(ctx context.Context, req resource.CreateRequest
 		return
 	}
 
+	ApplyRecordANIOSUseFlags(ctx, req.Config, rec, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
 	apiResp, _, err := r.service.Create(ctx, rec, &core.Options{
 		ReturnFields: RecordAReturnFields,
 		Inherit:      RecordAInheritanceType,
@@ -322,6 +327,11 @@ func (r *RecordAResource) Update(ctx context.Context, req resource.UpdateRequest
 	}
 
 	rec := data.Expand(ctx, &resp.Diagnostics, false)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	ApplyRecordANIOSUseFlags(ctx, req.Config, rec, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}

@@ -40,7 +40,3 @@ func BuildRecordAFuncCall(ctx context.Context, data types.Object, diags *diag.Di
 
 	return m.FuncCall(ctx, "Ipv4addr", "network", diags)
 }
-
-func PostFlattenRecordANIOS(ctx context.Context, niosObj types.Object, diags *diag.Diagnostics) types.Object {
-	return niosObj
-}
