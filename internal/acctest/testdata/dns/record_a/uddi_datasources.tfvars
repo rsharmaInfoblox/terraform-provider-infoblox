@@ -1,14 +1,43 @@
 # Auto-generated datasource acceptance-test cases for RecordA (uddi).
 case "filters" {
-  # filters — generated from terraform-provider-uddi
+  # filters — filter an A record by name_in_zone + zone.
   backend = "uddi"
-  skip        = true
-  skip_reason = "a resource field value in the data source config could not be resolved (reference to another resource, or a nested/complex value)"
+
+  filter {
+    type = "filters"
+    values = {
+      name_in_zone = "uddi.name_in_zone"
+      zone         = "uddi.zone"
+    }
+  }
+
+  step {
+    uddi {
+      rdata        = { address = "{{random_ip}}" }
+      zone         = "dns/auth_zone/113e8a4d-440c-488f-aaf0-1acea9437ff9"
+      name_in_zone = "{{random}}"
+    }
+  }
+
 }
 
 case "tag_filters" {
-  # tag_filters — generated from terraform-provider-uddi
+  # tag_filters — filter an A record by tag value.
   backend = "uddi"
-  skip        = true
-  skip_reason = "a resource field value in the data source config could not be resolved (reference to another resource, or a nested/complex value)"
+
+  filter {
+    type = "tag_filters"
+    values = {
+      tag1 = "uddi.tags.tag1"
+    }
+  }
+
+  step {
+    uddi {
+      rdata = { address = "{{random_ip}}" }
+      zone  = "dns/auth_zone/113e8a4d-440c-488f-aaf0-1acea9437ff9"
+      tags  = { tag1 = "{{random2}}" }
+    }
+  }
+
 }
