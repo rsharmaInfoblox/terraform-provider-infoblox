@@ -41,7 +41,7 @@ type Ipv6filteroptionListModel struct {
 }
 
 func (l *Ipv6filteroptionList) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_ipv6filteroption"
+	resp.TypeName = req.ProviderTypeName + "_ipv6_filteroption"
 }
 
 func (l *Ipv6filteroptionList) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
@@ -111,7 +111,7 @@ func (l *Ipv6filteroptionList) List(ctx context.Context, req list.ListRequest, s
 	}
 
 	requestLimit := int32(req.Limit)
-	tflog.Info(ctx, fmt.Sprintf("infoblox_ipv6filteroption list: req.Limit=%d backend=%s includeResource=%t",
+	tflog.Info(ctx, fmt.Sprintf("infoblox_ipv6_filteroption list: req.Limit=%d backend=%s includeResource=%t",
 		req.Limit, l.backend, req.IncludeResource))
 
 	opts := &core.ListOptions{

@@ -37,7 +37,7 @@ type Ipv6filteroptionResource struct {
 }
 
 func (r *Ipv6filteroptionResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_ipv6filteroption"
+	resp.TypeName = req.ProviderTypeName + "_ipv6_filteroption"
 	resp.ResourceBehavior = resource.ResourceBehavior{
 		MutableIdentity: true,
 	}

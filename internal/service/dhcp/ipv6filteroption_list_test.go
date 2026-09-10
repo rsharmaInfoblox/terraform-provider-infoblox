@@ -7,7 +7,7 @@ import (
 )
 
 func TestAccIpv6filteroptionList(t *testing.T) {
-	resourceType := "infoblox_ipv6filteroption"
+	resourceType := "infoblox_ipv6_filteroption"
 
 	checksByBackend := map[string]acctest.CheckFuncs{
 		"nios": {
@@ -22,7 +22,7 @@ func TestAccIpv6filteroptionList(t *testing.T) {
 
 	for _, backend := range []string{"nios", "uddi"} {
 		t.Run(backend, func(t *testing.T) {
-			acctest.RunListCases(t, resourceType, "dhcp/ipv6filteroption/"+backend+"_lists.hcl", checksByBackend)
+			acctest.RunListCases(t, resourceType, "dhcp/ipv6_filteroption/"+backend+"_lists.hcl", checksByBackend)
 		})
 	}
 }
