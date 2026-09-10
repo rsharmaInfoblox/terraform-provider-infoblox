@@ -153,6 +153,7 @@ var Ipv6filteroptionResourceNiosSchemaAttributes = map[string]schema.Attribute{
 	},
 	"lease_time": schema.Int64Attribute{
 		Optional:            true,
+		Computed:            true,
 		MarkdownDescription: "Determines the lease time of a DHCP IPv6 filter option object.",
 	},
 	"name": schema.StringAttribute{
