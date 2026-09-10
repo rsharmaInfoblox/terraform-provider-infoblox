@@ -1,48 +1,6 @@
-# Ipv6filteroption — uddi list cases
-case "basic" {
-  backend        = "uddi"
-  min_tf_version = "1.14.0"
-  prerequisites_hcl = <<-PREREQ
-  resource "infoblox_ipv6_dhcp_optionspace" "test" {
-    uddi = {
-      name = "{{random2}}"
-    }
-  }
-  resource "infoblox_ipv6_dhcp_optiondefinition" "test" {
-    uddi = {
-      code         = 234
-      name         = "test_opt"
-      option_space = infoblox_ipv6_dhcp_optionspace.test.id
-      type         = "boolean"
-    }
-  }
-  PREREQ
-
-  step {
-    uddi {
-      name = "{{random}}"
-      rules = {
-        match = "any"
-        rules = [{
-          compare      = "equals"
-          option_code  = infoblox_ipv6_dhcp_optiondefinition.test.id
-          option_value = "true"
-        }]
-      }
-    }
-  }
-
-  step {
-    query    = true
-    provider = infoblox
-    limit    = 5
-  }
-
-}
-
+# Ipv6filteroption — uddi datasource cases
 case "filters" {
-  backend        = "uddi"
-  min_tf_version = "1.14.0"
+  backend = "uddi"
   prerequisites_hcl = <<-PREREQ
   resource "infoblox_ipv6_dhcp_optionspace" "test" {
     uddi = {
@@ -59,6 +17,15 @@ case "filters" {
   }
   PREREQ
 
+  filter {
+    type = "filters"
+    values = {
+      name = "uddi.name"
+    }
+  }
+
+  pair_checks = ["uddi.comment", "uddi.header_option_filename", "uddi.header_option_server_address", "uddi.header_option_server_name", "uddi.lease_time", "uddi.name", "uddi.protocol", "uddi.role"]
+
   step {
     uddi {
       name = "{{random}}"
@@ -69,18 +36,6 @@ case "filters" {
           option_code  = infoblox_ipv6_dhcp_optiondefinition.test.id
           option_value = "true"
         }]
-      }
-    }
-  }
-
-  step {
-    query            = true
-    provider         = infoblox
-    include_resource = true
-    filter {
-      type = "filters"
-      values = {
-        name = "uddi.name"
       }
     }
   }
@@ -88,8 +43,7 @@ case "filters" {
 }
 
 case "tag_filters" {
-  backend        = "uddi"
-  min_tf_version = "1.14.0"
+  backend = "uddi"
   prerequisites_hcl = <<-PREREQ
   resource "infoblox_ipv6_dhcp_optionspace" "test" {
     uddi = {
@@ -105,6 +59,15 @@ case "tag_filters" {
     }
   }
   PREREQ
+
+  filter {
+    type = "tag_filters"
+    values = {
+      tag1 = "uddi.tags.tag1"
+    }
+  }
+
+  pair_checks = ["uddi.comment", "uddi.header_option_filename", "uddi.header_option_server_address", "uddi.header_option_server_name", "uddi.lease_time", "uddi.name", "uddi.protocol", "uddi.role"]
 
   step {
     uddi {
@@ -117,18 +80,6 @@ case "tag_filters" {
           option_code  = infoblox_ipv6_dhcp_optiondefinition.test.id
           option_value = "true"
         }]
-      }
-    }
-  }
-
-  step {
-    query            = true
-    provider         = infoblox
-    include_resource = true
-    filter {
-      type = "tag_filters"
-      values = {
-        tag1 = "uddi.tags.tag1"
       }
     }
   }

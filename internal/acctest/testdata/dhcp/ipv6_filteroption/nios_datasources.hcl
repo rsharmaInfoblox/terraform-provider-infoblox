@@ -9,7 +9,7 @@ case "filters" {
     }
   }
 
-  pair_checks = ["nios.apply_as_class", "nios.comment", "nios.expression", "nios.lease_time", "nios.name", "nios.option_space"]
+  pair_checks = ["nios.apply_as_class", "nios.comment", "nios.expression", "nios.lease_time", "nios.name", "nios.option_list", "nios.option_space"]
 
   step {
     nios {
@@ -29,7 +29,7 @@ case "ext_attr_filters" {
     }
   }
 
-  pair_checks = ["nios.apply_as_class", "nios.comment", "nios.expression", "nios.lease_time", "nios.name", "nios.option_space"]
+  pair_checks = ["nios.apply_as_class", "nios.comment", "nios.expression", "nios.lease_time", "nios.name", "nios.option_list", "nios.option_space"]
 
   step {
     nios {

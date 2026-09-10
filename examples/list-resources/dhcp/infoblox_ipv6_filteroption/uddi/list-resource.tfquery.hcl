@@ -3,7 +3,7 @@ list "infoblox_ipv6_filteroption" "list_ipv6_filteroption_using_filters" {
   provider = infoblox
   config {
     filters = {
-      comment = "Created by Terraform"
+      name = "ipv6_filteroption_example"
     }
   }
   limit = 10
@@ -14,7 +14,7 @@ list "infoblox_ipv6_filteroption" "list_ipv6_filteroption_using_tags" {
   provider = infoblox
   config {
     tag_filters = {
-      Site = "location-1"
+      location = "site1"
     }
   }
 }
