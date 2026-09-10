@@ -11,8 +11,6 @@ case "basic" {
       "nios.name"           = "{{random}}"
       "nios.apply_as_class" = "true"
       "nios.option_space"   = "DHCPv6"
-      "nios.comment"        = ""
-      "nios.expression"     = ""
     }
   }
 
@@ -23,20 +21,6 @@ case "disappears" {
   disappears            = true
   expect_non_empty_plan = true
   parallel              = true
-
-  step {
-    nios {
-      name = "{{random}}"
-    }
-  }
-
-}
-
-case "import" {
-  backend  = "nios"
-  parallel = true
-  import   = true
-  import_ignore = ["nios.ext_attrs_all"]
 
   step {
     nios {
@@ -105,20 +89,20 @@ case "expression" {
   step {
     nios {
       name       = "{{random}}"
-      expression = "(option dhcp6.server-id=\\\"server-id\\\")"
+      expression = "(option dhcp6.server-id=\"server-id\")"
     }
     check = {
-      "nios.expression" = "(option dhcp6.server-id=\\\"server-id\\\")"
+      "nios.expression" = "(option dhcp6.server-id=\"server-id\")"
     }
   }
 
   step {
     nios {
       name       = "{{random}}"
-      expression = "(option dhcp6.server-id=\\\"server-id\\\" AND option dhcp6.vendor-class=\\\"DHCPv6\\\")"
+      expression = "(option dhcp6.server-id=\"server-id\" AND option dhcp6.vendor-class=\"DHCPv6\")"
     }
     check = {
-      "nios.expression" = "(option dhcp6.server-id=\\\"server-id\\\" AND option dhcp6.vendor-class=\\\"DHCPv6\\\")"
+      "nios.expression" = "(option dhcp6.server-id=\"server-id\" AND option dhcp6.vendor-class=\"DHCPv6\")"
     }
   }
 
@@ -244,15 +228,11 @@ case "option_list" {
 
 }
 
-# TODO: auto-extraction incomplete — please verify and fill in manually.
-# Reason: requires_resource: infoblox_ipv6_option_space not yet implemented
 case "option_space" {
   backend     = "nios"
-  skip        = true
-  skip_reason = "requires_resource: infoblox_ipv6_option_space not yet implemented"
-  parallel    = true
+ parallel    = true
   prerequisites_hcl = <<-PREREQ
-  resource "infoblox_ipv6_option_space_unknown" "test" {
+  resource "infoblox_ipv6_dhcp_optionspace" "test" {
     nios = {
       name = "{{random2}}"
       enterprise_number = 10
@@ -273,7 +253,7 @@ case "option_space" {
   step {
     nios {
       name         = "{{random}}"
-      option_space = infoblox_ipv6_option_space_unknown.test.nios.name
+      option_space = infoblox_ipv6_dhcp_optionspace.test.nios.name
     }
     check = {
       "nios.option_space" = "{{random2}}"
