@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/mapdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
+	stringplanmodifier "github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
@@ -188,7 +189,9 @@ var Ipv6filteroptionResourceNiosSchemaAttributes = map[string]schema.Attribute{
 
 var Ipv6filteroptionResourceUddiSchemaAttributes = map[string]schema.Attribute{
 	"comment": schema.StringAttribute{
+		Default:             stringdefault.StaticString(""),
 		Optional:            true,
+		Computed:            true,
 		MarkdownDescription: "The description for the option filter. May contain 0 to 1024 characters. Can include UTF-8.",
 	},
 	"dhcp_options": schema.ListNestedAttribute{
@@ -202,19 +205,26 @@ var Ipv6filteroptionResourceUddiSchemaAttributes = map[string]schema.Attribute{
 		MarkdownDescription: "The list of DHCP options for the option filter. May be either a specific option or a group of options.",
 	},
 	"header_option_filename": schema.StringAttribute{
+		Default:             stringdefault.StaticString(""),
 		Optional:            true,
+		Computed:            true,
 		MarkdownDescription: "The configuration for header option filename field.",
 	},
 	"header_option_server_address": schema.StringAttribute{
+		Default:             stringdefault.StaticString(""),
 		Optional:            true,
+		Computed:            true,
 		MarkdownDescription: "The configuration for header option server address field.",
 	},
 	"header_option_server_name": schema.StringAttribute{
+		Default:             stringdefault.StaticString(""),
 		Optional:            true,
+		Computed:            true,
 		MarkdownDescription: "The configuration for header option server name field.",
 	},
 	"lease_time": schema.Int64Attribute{
 		Optional:            true,
+		Computed:            true,
 		MarkdownDescription: "The lease lifetime duration in seconds.",
 	},
 	"name": schema.StringAttribute{
@@ -222,16 +232,21 @@ var Ipv6filteroptionResourceUddiSchemaAttributes = map[string]schema.Attribute{
 		MarkdownDescription: "The name of the option filter. Must contain 1 to 256 characters. Can include UTF-8.",
 	},
 	"protocol": schema.StringAttribute{
-		Optional:            true,
+		Default:             stringdefault.StaticString("ip6"),
+		Computed:            true,
 		MarkdownDescription: "The type of protocol of option filter (_ip4_ or _ip6_).",
 	},
 	"role": schema.StringAttribute{
-		Optional:            true,
+		Optional: true,
+		Computed: true,
+		PlanModifiers: []planmodifier.String{
+			stringplanmodifier.RequiresReplaceIfConfigured(),
+		},
 		MarkdownDescription: "The role of DHCP filter (_values_ or _selection_).  Defaults to _values_.",
 	},
 	"rules": schema.SingleNestedAttribute{
 		Attributes:          OptionFilterRuleListResourceSchemaAttributes,
-		Optional:            true,
+		Required:            true,
 		MarkdownDescription: "An __OptionFilterRuleList__ object (_dhcp/option_filter_rule_list_) represents a collection of DHCP option filter rules that supports matching all or any rules.",
 	},
 	"tags": schema.MapAttribute{
@@ -251,6 +266,7 @@ var Ipv6filteroptionResourceUddiSchemaAttributes = map[string]schema.Attribute{
 	},
 	"vendor_specific_option_option_space": schema.StringAttribute{
 		Optional:            true,
+		Computed:            true,
 		MarkdownDescription: "The resource identifier.",
 	},
 }
@@ -272,7 +288,7 @@ func (m *Ipv6filteroptionModel) Expand(ctx context.Context, diags *diag.Diagnost
 	// Expand UDDI nested attribute (returns nil if not present)
 	uddiModel := flex.ExpandNestedObject[UDDIIpv6filteroptionModel](ctx, m.UDDI, diags)
 	if uddiModel != nil {
-		obj.UDDI = uddiModel.Expand(ctx, diags)
+		obj.UDDI = uddiModel.Expand(ctx, diags, isCreate)
 	}
 
 	return obj
@@ -293,8 +309,8 @@ func (m *NIOSIpv6filteroptionModel) Expand(ctx context.Context, diags *diag.Diag
 }
 
 // Expand converts the UDDI TF model to the core model.
-func (m *UDDIIpv6filteroptionModel) Expand(ctx context.Context, diags *diag.Diagnostics) *coremodel.UDDIIpv6filteroptionExt {
-	return &coremodel.UDDIIpv6filteroptionExt{
+func (m *UDDIIpv6filteroptionModel) Expand(ctx context.Context, diags *diag.Diagnostics, isCreate bool) *coremodel.UDDIIpv6filteroptionExt {
+	ext := &coremodel.UDDIIpv6filteroptionExt{
 		Comment:                         flex.ExpandStringPointer(m.Comment),
 		DhcpOptions:                     flex.ExpandFrameworkListNestedBlock(ctx, m.DhcpOptions, diags, ExpandOptionItem),
 		HeaderOptionFilename:            flex.ExpandStringPointer(m.HeaderOptionFilename),
@@ -302,12 +318,15 @@ func (m *UDDIIpv6filteroptionModel) Expand(ctx context.Context, diags *diag.Diag
 		HeaderOptionServerName:          flex.ExpandStringPointer(m.HeaderOptionServerName),
 		LeaseTime:                       flex.ExpandInt64Pointer(m.LeaseTime),
 		Name:                            flex.ExpandString(m.Name),
-		Protocol:                        flex.ExpandStringPointer(m.Protocol),
 		Role:                            flex.ExpandStringPointer(m.Role),
 		Rules:                           ExpandOptionFilterRuleList(ctx, m.Rules, diags),
 		Tags:                            flex.ExpandMapStringAny(ctx, m.Tags, diags),
 		VendorSpecificOptionOptionSpace: flex.ExpandStringPointer(m.VendorSpecificOptionOptionSpace),
 	}
+	if isCreate {
+		ext.Protocol = flex.ExpandStringPointer(m.Protocol)
+	}
+	return ext
 }
 
 // Flatten populates the TF model from a core response.

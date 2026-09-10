@@ -92,9 +92,9 @@ func (m *Ipv6filteroptionOptionListModel) Expand(ctx context.Context, diags *dia
 		return nil
 	}
 	to := &niosdhcp.Ipv6filteroptionOptionList{
-		Name:        flex.ExpandStringPointerNullAsEmpty(m.Name),
+		Name:        flex.ExpandStringPointer(m.Name),
 		Num:         flex.ExpandInt64Pointer(m.Num),
-		VendorClass: flex.ExpandStringPointerNullAsEmpty(m.VendorClass),
+		VendorClass: flex.ExpandStringPointer(m.VendorClass),
 		Value:       flex.ExpandStringPointerNullAsEmpty(m.Value),
 		UseOption:   flex.ExpandBoolPointer(m.UseOption),
 	}
