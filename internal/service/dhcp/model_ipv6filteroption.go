@@ -342,8 +342,10 @@ func (m *Ipv6filteroptionModel) Flatten(ctx context.Context, resp *coremodel.Ipv
 	if niosModel == nil {
 		niosModel = &NIOSIpv6filteroptionModel{}
 	}
+	plannedNIOS := flex.ExpandNestedObject[NIOSIpv6filteroptionModel](ctx, m.NIOS, diags)
 	niosModel.Flatten(ctx, resp.NIOS, diags)
 	if resp.NIOS != nil {
+		PostFlattenIpv6filteroptionNIOS(ctx, plannedNIOS, niosModel, diags)
 		m.NIOS = flex.FlattenNestedObject(ctx, niosModel, NIOSIpv6filteroptionAttrTypes, diags)
 	} else {
 		m.NIOS = types.ObjectNull(NIOSIpv6filteroptionAttrTypes)

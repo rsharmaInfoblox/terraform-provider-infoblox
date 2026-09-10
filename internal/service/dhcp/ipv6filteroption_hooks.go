@@ -3,8 +3,11 @@ package dhcp
 import (
 	"context"
 
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/infobloxopen/terraform-provider-infoblox/internal/flex"
+	"github.com/infobloxopen/terraform-provider-infoblox/internal/utils"
 )
 
 // ValidateIpv6filteroption validates the Ipv6filteroption configuration.
@@ -21,4 +24,16 @@ func validateIpv6filteroptionNIOSConfig(ctx context.Context, m *NIOSIpv6filterop
 }
 
 func validateIpv6filteroptionUDDIConfig(ctx context.Context, m *UDDIIpv6filteroptionModel, resp *resource.ValidateConfigResponse) {
+}
+
+func PostFlattenIpv6filteroptionNIOS(ctx context.Context, planned, flattened *NIOSIpv6filteroptionModel, diags *diag.Diagnostics) {
+	if planned == nil || flattened == nil {
+		return
+	}
+
+	if !planned.OptionList.IsUnknown() {
+		if reordered, d := utils.ReorderAndFilterDHCPOptions(ctx, planned.OptionList, flattened.OptionList); !d.HasError() {
+			flattened.OptionList = reordered.(basetypes.ListValue)
+		}
+	}
 }
