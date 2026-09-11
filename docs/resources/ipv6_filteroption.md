@@ -57,16 +57,32 @@ resource "infoblox_ipv6_filteroption" "ipv6_filter_option_with_additional_fields
 ### UDDI Backend
 
 ```terraform
-// Create a DHCP IPv6 Option Filter with the required fields
-resource "infoblox_ipv6_filteroption" "ipv6_filteroption_basic_fields" {
+// Create IPv6 Option Space and Option Definition (Required as Parent).
+resource "infoblox_ipv6_dhcp_optionspace" "example" {
   uddi = {
-    name = "ipv6_filteroption_example"
+    name = "ipv6_option_space_example"
+  }
+}
+
+resource "infoblox_ipv6_dhcp_optiondefinition" "example" {
+  uddi = {
+    code         = 234
+    name         = "ipv6_option_code_example"
+    option_space = infoblox_ipv6_dhcp_optionspace.example.id
+    type         = "boolean"
+  }
+}
+
+// Create an IPv6 Filter Option with Basic fields
+resource "infoblox_ipv6_filteroption" "ipv6_filter_option_basic_fields" {
+  uddi = {
+    name = "ipv6_filter_option_example"
     rules = {
       match = "any"
       rules = [
         {
           compare      = "equals"
-          option_code  = "dhcp/option_code/de50b0db-01cc-4da8-8213-aefd0880340f"
+          option_code  = infoblox_ipv6_dhcp_optiondefinition.example.id
           option_value = "true"
         }
       ]
@@ -74,17 +90,17 @@ resource "infoblox_ipv6_filteroption" "ipv6_filteroption_basic_fields" {
   }
 }
 
-// Create a DHCP IPv6 Option Filter with Additional Fields
-resource "infoblox_ipv6_filteroption" "ipv6_filteroption_additional_fields" {
+// Create an IPv6 Filter Option with Additional Fields
+resource "infoblox_ipv6_filteroption" "ipv6_filter_option_with_additional_fields" {
   uddi = {
-    name    = "ipv6_filteroption_example_2"
-    comment = "Example DHCPv6 option filter"
+    name    = "ipv6_filter_option_example_2"
+    comment = "Example IPv6 filter option"
     rules = {
       match = "all"
       rules = [
         {
           compare      = "text_substring"
-          option_code  = "dhcp/option_code/de50b0db-01cc-4da8-8213-aefd0880340f"
+          option_code  = infoblox_ipv6_dhcp_optiondefinition.example.id
           option_value = "true"
           # Offset applies only to the substring compare modes
           substring_offset = 2
@@ -96,16 +112,13 @@ resource "infoblox_ipv6_filteroption" "ipv6_filteroption_additional_fields" {
     dhcp_options = [
       {
         type         = "option"
-        option_code  = "dhcp/option_code/de50b0db-01cc-4da8-8213-aefd0880340f"
+        option_code  = infoblox_ipv6_dhcp_optiondefinition.example.id
         option_value = "true"
       }
     ]
 
     # Other optional fields
-    lease_time                   = 3600
-    header_option_filename       = "pxelinux.0"
-    header_option_server_address = "192.168.1.10"
-    header_option_server_name    = "tf-infoblox.example.com."
+    lease_time = 3600
     tags = {
       location = "site1"
     }
