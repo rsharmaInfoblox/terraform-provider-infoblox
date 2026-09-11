@@ -62,9 +62,6 @@ var NIOSIpv6filteroptionAttrTypes = map[string]attr.Type{
 type UDDIIpv6filteroptionModel struct {
 	Comment                         types.String `tfsdk:"comment"`
 	DhcpOptions                     types.List   `tfsdk:"dhcp_options"`
-	HeaderOptionFilename            types.String `tfsdk:"header_option_filename"`
-	HeaderOptionServerAddress       types.String `tfsdk:"header_option_server_address"`
-	HeaderOptionServerName          types.String `tfsdk:"header_option_server_name"`
 	LeaseTime                       types.Int64  `tfsdk:"lease_time"`
 	Name                            types.String `tfsdk:"name"`
 	Protocol                        types.String `tfsdk:"protocol"`
@@ -78,9 +75,6 @@ type UDDIIpv6filteroptionModel struct {
 var UDDIIpv6filteroptionAttrTypes = map[string]attr.Type{
 	"comment":                             types.StringType,
 	"dhcp_options":                        types.ListType{ElemType: types.ObjectType{AttrTypes: OptionItemAttrTypes}},
-	"header_option_filename":              types.StringType,
-	"header_option_server_address":        types.StringType,
-	"header_option_server_name":           types.StringType,
 	"lease_time":                          types.Int64Type,
 	"name":                                types.StringType,
 	"protocol":                            types.StringType,
@@ -204,24 +198,6 @@ var Ipv6filteroptionResourceUddiSchemaAttributes = map[string]schema.Attribute{
 		},
 		MarkdownDescription: "The list of DHCP options for the option filter. May be either a specific option or a group of options.",
 	},
-	"header_option_filename": schema.StringAttribute{
-		Default:             stringdefault.StaticString(""),
-		Optional:            true,
-		Computed:            true,
-		MarkdownDescription: "The configuration for header option filename field.",
-	},
-	"header_option_server_address": schema.StringAttribute{
-		Default:             stringdefault.StaticString(""),
-		Optional:            true,
-		Computed:            true,
-		MarkdownDescription: "The configuration for header option server address field.",
-	},
-	"header_option_server_name": schema.StringAttribute{
-		Default:             stringdefault.StaticString(""),
-		Optional:            true,
-		Computed:            true,
-		MarkdownDescription: "The configuration for header option server name field.",
-	},
 	"lease_time": schema.Int64Attribute{
 		Optional:            true,
 		Computed:            true,
@@ -313,9 +289,6 @@ func (m *UDDIIpv6filteroptionModel) Expand(ctx context.Context, diags *diag.Diag
 	ext := &coremodel.UDDIIpv6filteroptionExt{
 		Comment:                         flex.ExpandStringPointer(m.Comment),
 		DhcpOptions:                     flex.ExpandFrameworkListNestedBlock(ctx, m.DhcpOptions, diags, ExpandOptionItem),
-		HeaderOptionFilename:            flex.ExpandStringPointer(m.HeaderOptionFilename),
-		HeaderOptionServerAddress:       flex.ExpandStringPointer(m.HeaderOptionServerAddress),
-		HeaderOptionServerName:          flex.ExpandStringPointer(m.HeaderOptionServerName),
 		LeaseTime:                       flex.ExpandInt64Pointer(m.LeaseTime),
 		Name:                            flex.ExpandString(m.Name),
 		Role:                            flex.ExpandStringPointer(m.Role),
@@ -390,9 +363,6 @@ func (m *UDDIIpv6filteroptionModel) Flatten(ctx context.Context, from *coremodel
 	}
 	m.Comment = flex.FlattenStringPointer(from.Comment)
 	m.DhcpOptions = flex.FlattenFrameworkListNestedBlock(ctx, from.DhcpOptions, OptionItemAttrTypes, diags, FlattenOptionItem)
-	m.HeaderOptionFilename = flex.FlattenStringPointer(from.HeaderOptionFilename)
-	m.HeaderOptionServerAddress = flex.FlattenStringPointer(from.HeaderOptionServerAddress)
-	m.HeaderOptionServerName = flex.FlattenStringPointer(from.HeaderOptionServerName)
 	m.LeaseTime = flex.FlattenInt64Pointer(from.LeaseTime)
 	m.Name = flex.FlattenString(from.Name)
 	m.Protocol = flex.FlattenStringPointer(from.Protocol)
