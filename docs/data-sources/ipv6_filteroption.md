@@ -15,22 +15,22 @@ Retrieves information about existing Infoblox Ipv6filteroption from both the NIO
 ### NIOS Backend
 
 ```terraform
-// Retrieve a specific DHCP IPv6 Filter Option by filters
-data "infoblox_ipv6_filteroption" "get_dhcp_ipv6filteroptions_using_filters" {
+// Retrieve a specific IPv6 Filter Option by filters
+data "infoblox_ipv6_filteroption" "get_ipv6_filter_options_using_filters" {
   filters = {
     name = "example_ipv6_filter_option_1"
   }
 }
 
-// Retrieve specific DHCP IPv6 Option Filters using Extensible Attributes
-data "infoblox_ipv6_filteroption" "get_dhcp_ipv6filteroption_using_extensible_attributes" {
+// Retrieve specific IPv6 Filter Options using Extensible Attributes
+data "infoblox_ipv6_filteroption" "get_ipv6_filter_options_using_extensible_attributes" {
   ext_attr_filters = {
     Site = "location-1"
   }
 }
 
-// Retrieve all DHCP IPv6 Option Filters
-data "infoblox_ipv6_filteroption" "get_all_dhcp_ipv6filteroptions" {}
+// Retrieve all IPv6 Filter Options
+data "infoblox_ipv6_filteroption" "get_all_ipv6_filter_options" {}
 ```
 
 ### UDDI Backend

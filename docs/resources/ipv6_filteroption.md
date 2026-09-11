@@ -15,15 +15,15 @@ Manages an Infoblox Ipv6filteroption in both NIOS and UDDI backends.
 ### NIOS Backend
 
 ```terraform
-// Create a DHCP IPv6 Filter Option with Basic Fields
-resource "infoblox_ipv6_filteroption" "dhcp_ipv6filteroption_with_basic_fields" {
+// Create an IPv6 Filter Option with Basic Fields
+resource "infoblox_ipv6_filteroption" "ipv6_filter_option_with_basic_fields" {
   nios = {
     name = "example_ipv6_filter_option_1"
   }
 }
 
-// Create a DHCP IPv6 Filter Option with Additional Fields
-resource "infoblox_ipv6_filteroption" "dhcp_ipv6filteroption_with_additional_fields" {
+// Create an IPv6 Filter Option with Additional Fields
+resource "infoblox_ipv6_filteroption" "ipv6_filter_option_with_additional_fields" {
   nios = {
     name = "example_ipv6_filter_option_2"
 
