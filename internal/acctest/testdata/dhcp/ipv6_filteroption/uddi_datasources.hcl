@@ -1,6 +1,7 @@
 # Ipv6filteroption — uddi datasource cases
 case "filters" {
   backend = "uddi"
+  parallel = true
   prerequisites_hcl = <<-PREREQ
   resource "infoblox_ipv6_dhcp_optionspace" "test" {
     uddi = {
@@ -24,7 +25,7 @@ case "filters" {
     }
   }
 
-  pair_checks = ["uddi.comment", "uddi.header_option_filename", "uddi.header_option_server_address", "uddi.header_option_server_name", "uddi.lease_time", "uddi.name", "uddi.protocol", "uddi.role"]
+  pair_checks = ["uddi.comment", "uddi.lease_time", "uddi.name", "uddi.protocol", "uddi.role"]
 
   step {
     uddi {
@@ -44,6 +45,7 @@ case "filters" {
 
 case "tag_filters" {
   backend = "uddi"
+  parallel = true
   prerequisites_hcl = <<-PREREQ
   resource "infoblox_ipv6_dhcp_optionspace" "test" {
     uddi = {
@@ -67,7 +69,7 @@ case "tag_filters" {
     }
   }
 
-  pair_checks = ["uddi.comment", "uddi.header_option_filename", "uddi.header_option_server_address", "uddi.header_option_server_name", "uddi.lease_time", "uddi.name", "uddi.protocol", "uddi.role"]
+  pair_checks = ["uddi.comment", "uddi.lease_time", "uddi.name", "uddi.protocol", "uddi.role"]
 
   step {
     uddi {

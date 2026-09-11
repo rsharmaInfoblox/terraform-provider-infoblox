@@ -1,7 +1,7 @@
 # Auto-generated datasource acceptance-test cases for Ipv6filteroption.
 case "filters" {
   backend = "nios"
-
+  parallel = true
   filter {
     type   = "filters"
     values = {
@@ -21,7 +21,7 @@ case "filters" {
 
 case "ext_attr_filters" {
   backend = "nios"
-
+  parallel = true
   filter {
     type   = "ext_attr_filters"
     values = {

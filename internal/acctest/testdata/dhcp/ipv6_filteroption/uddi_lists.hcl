@@ -1,6 +1,7 @@
 # Ipv6filteroption — uddi list cases
 case "basic" {
   backend        = "uddi"
+  parallel = true
   min_tf_version = "1.14.0"
   prerequisites_hcl = <<-PREREQ
   resource "infoblox_ipv6_dhcp_optionspace" "test" {
@@ -42,6 +43,7 @@ case "basic" {
 
 case "filters" {
   backend        = "uddi"
+  parallel = true
   min_tf_version = "1.14.0"
   prerequisites_hcl = <<-PREREQ
   resource "infoblox_ipv6_dhcp_optionspace" "test" {
@@ -89,6 +91,7 @@ case "filters" {
 
 case "tag_filters" {
   backend        = "uddi"
+  parallel = true
   min_tf_version = "1.14.0"
   prerequisites_hcl = <<-PREREQ
   resource "infoblox_ipv6_dhcp_optionspace" "test" {

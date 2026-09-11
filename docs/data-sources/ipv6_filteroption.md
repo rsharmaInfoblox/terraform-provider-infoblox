@@ -115,9 +115,6 @@ Read-Only:
 
 - `comment` (String) The description for the option filter. May contain 0 to 1024 characters. Can include UTF-8.
 - `dhcp_options` (Attributes List) The list of DHCP options for the option filter. May be either a specific option or a group of options. (see [below for nested schema](#nestedatt--results--uddi--dhcp_options))
-- `header_option_filename` (String) The configuration for header option filename field.
-- `header_option_server_address` (String) The configuration for header option server address field.
-- `header_option_server_name` (String) The configuration for header option server name field.
 - `lease_time` (Number) The lease lifetime duration in seconds.
 - `name` (String) The name of the option filter. Must contain 1 to 256 characters. Can include UTF-8.
 - `protocol` (String) The type of protocol of option filter (_ip4_ or _ip6_).

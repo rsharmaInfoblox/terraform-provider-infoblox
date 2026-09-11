@@ -1,7 +1,7 @@
 # Ipv6filteroption — nios list cases
-
 case "basic" {
   backend        = "nios"
+  parallel = true
   min_tf_version = "1.14.0"
 
   step {
@@ -20,6 +20,7 @@ case "basic" {
 
 case "filters" {
   backend        = "nios"
+  parallel = true
   min_tf_version = "1.14.0"
 
   step {
@@ -44,6 +45,7 @@ case "filters" {
 
 case "ext_attr_filters" {
   backend        = "nios"
+  parallel = true
   min_tf_version = "1.14.0"
 
   step {
